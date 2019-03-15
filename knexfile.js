@@ -5,7 +5,7 @@ module.exports = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: './dev.sqlite3'
+      filename: './data/doggo-land-db.sqlite3'
     },
     useNullAsDefault: true
   }
