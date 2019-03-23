@@ -1,10 +1,8 @@
 require('dotenv').config(); 
-
 const express = require('express');
-const knex = require('knex');
-const knexConfig = require('./knexfile');
-const db = knex(knexConfig.development);
+const db = require("./data/dbConfig.js");
 const server = express();
+const kennelsRoutes = require('./routes/kennels-routes.js');
 // Multer
 const multer = require('multer')
 const storage = multer.diskStorage({
@@ -17,12 +15,14 @@ const storage = multer.diskStorage({
     }
   })
 server.use(express.json());
+server.use("/api/kennels", kennelsRoutes);
 
 server.get('/', (req, res) => {
     res.send("Woof Woof! We Out the Pound!")
 });
+
 server.post('/upload', (req, res, next) => {
-    const upload = multer({ storage }).single('name-of-input-key')
+    const upload = multer({ storage }).single('upload-image')
     upload(req, res, function(err) {
       if (err) {
         return res.send(err)
@@ -31,12 +31,28 @@ server.post('/upload', (req, res, next) => {
       console.log(req.file)
       const cloudinary = require('cloudinary').v2
       cloudinary.config({
-        cloud_name: ,
-        api_key: '###!!!###',
-        api_secret: '###!!!###'
+        cloud_name: process.env.CLOUD_NAME,
+        api_key: process.env.CLOUD_API,
+        api_secret: process.env.CLOUD_SECRET,
       })
+      const path = req.file.path
+      const uniqueFilename = new Date().toISOString()
+  
+      cloudinary.uploader.upload(
+        path,
+        { public_id: `doggo-land/${uniqueFilename}`, tags: `doggo-land` }, // directory and tags are optional
+        function(err, image) {
+          if (err) return res.send(err)
+          console.log('file uploaded to Cloudinary')
+          // remove file from server
+          const fs = require('fs')
+          fs.unlinkSync(path)
+          // return image details
+          res.json(image)
+        }
+      )
     })
-  })
+})
 
 
 const port = process.env.PORT || 5000;
