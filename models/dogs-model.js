@@ -9,17 +9,42 @@ module.exports = {
   };
   async function find() {
     const dogs = await db("dogs")
-    const breedsAndDog = await Promise.all(dogs.map(dog => findById(dog.id)))
-    return {breedsAndDog};
+    var fullDogs =[]
+    for(i=0; i<dogs.length; i++){
+      // console.log(dogs[i].id)
+      const dog = await findById(dogs[i].id)
+      fullDogs.push(dog)
+    }
+    return fullDogs;
   }
   async function findById(id) {
-    const dog = await db("dogs").where({id});
-    const breedID = await db("dog_breeds").where({"dog_id": id})
-    const breeds = await Promise.all(breedID.map(breed => db("breeds").where({"id":breed.id})))
+    const dog = await db("dogs").where({id}).first();
+    const breedID = await db("dog_breeds").where({"dog_id": dog.id})
+    // console.log(breedID)
+    const breeds = await Promise.all(
+      breedID.map(async(breed)=>{
+        try {
+          const name = await findBreed(breed.breed_id)
+          
+          return name[0].name
+        } catch (error) {
+          console.log(error)
+        }
+      })
+    )
+    
+    
+    console.log(breeds)
+    // for (i = 0; i < breedID.length; i++) { 
+    //   const test = await findBreed(breedID[i].breed_id)
+    //   console.log(test)
+    //   breeds.push(test[i].name)
+    // }
+    
     return {dog, breeds}
   }
-  async function findBreed(id){
-      return db("breeds").where({id}) 
+  function findBreed(id){
+      return db("breeds").where({id})
   }
 
   async function add(kennel){

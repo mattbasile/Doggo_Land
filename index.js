@@ -15,6 +15,7 @@ const storage = multer.diskStorage({
       cb(null, file.originalname)
     }
   })
+  
 server.use(express.json());
 server.use("/api/kennels", kennelsRoutes);
 server.use("/api/dogs", dogRoutes);

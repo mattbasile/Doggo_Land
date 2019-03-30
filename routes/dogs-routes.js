@@ -8,6 +8,7 @@ router.get('/', (req, res) => {
       res.status(200).json(data);
     })
     .catch(err => {
+      console.log(err)
       res.status(500).json({ message: ` Failed to get Dogs `, error: err });
     });
 });
@@ -20,6 +21,8 @@ router.get('/:id', (req, res) => {
       res.status(500).json({ message: ` Failed to get Dog `, error: err });
     });
 });
+
+
 router.post('/', (req, res) => {
     Dogs.add(req.body)
     .then(data => {
