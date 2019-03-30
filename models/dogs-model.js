@@ -32,21 +32,11 @@ module.exports = {
         }
       })
     )
-    
-    
-    console.log(breeds)
-    // for (i = 0; i < breedID.length; i++) { 
-    //   const test = await findBreed(breedID[i].breed_id)
-    //   console.log(test)
-    //   breeds.push(test[i].name)
-    // }
-    
     return {dog, breeds}
   }
   function findBreed(id){
       return db("breeds").where({id})
   }
-
   async function add(kennel){
     const [id] = await db('kennels').insert(kennel);
     return findById(id);

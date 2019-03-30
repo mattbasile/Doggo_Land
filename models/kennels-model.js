@@ -9,8 +9,14 @@ module.exports = {
   };
   async function find() {
     const kennels = await db("kennels")
-    const fullKennel = await Promise.all(kennels.map(kennel => findById(kennel.id)))
-    return {fullKennel};
+    // const fullKennel = await Promise.all(kennels.map(kennel => findById(kennel.id)))
+    var fullKennel =[]
+    for(i=0; i<kennels.length; i++){
+      // console.log(dogs[i].id)
+      const full = await findById(kennels[i].id)
+      fullKennel.push(full)
+    }
+    return fullKennel;
   }
   async function findById(id) {
     const kennel = await db("kennels").where({id});
