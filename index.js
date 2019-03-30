@@ -5,6 +5,7 @@ const server = express();
 const kennelsRoutes = require('./routes/kennels-routes.js');
 const dogRoutes = require('./routes/dogs-routes.js');
 const breedRoutes = require('./routes/breed-routes.js');
+const notificationRoutes = require('./routes/notification-routes.js');
 // Multer
 const multer = require('multer')
 const storage = multer.diskStorage({
@@ -21,6 +22,7 @@ server.use(express.json());
 server.use("/api/kennels", kennelsRoutes);
 server.use("/api/dogs", dogRoutes);
 server.use("/api/breeds", breedRoutes);
+server.use("/api/notifications", notificationRoutes);
 
 server.get('/', (req, res) => {
     res.send("Woof Woof! We Out the Pound!")
