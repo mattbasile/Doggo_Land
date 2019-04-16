@@ -18,8 +18,6 @@ module.exports = {
     const fullDogs = await Promise.all(doggos.map(dog => Dogs.findById(dog.id)))
     return {kennel, dogs:fullDogs}
   }
-
-  
   async function add(kennel){
     const [id] = await db('kennels').insert(kennel);
     return findById(id);
