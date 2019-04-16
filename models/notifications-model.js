@@ -3,6 +3,7 @@ const Dogs = require('./dogs-model');
 module.exports = {
     add,
     find,
+    findById,
     findByAdmin
   };
 

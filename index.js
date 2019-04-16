@@ -1,11 +1,12 @@
 require('dotenv').config(); 
-const express = require('express');
-const db = require("./data/dbConfig.js");
+const express = require("express");
 const server = express();
-const kennelsRoutes = require('./routes/kennels-routes.js');
-const dogRoutes = require('./routes/dogs-routes.js');
-const breedRoutes = require('./routes/breed-routes.js');
-const notificationRoutes = require('./routes/notification-routes.js');
+// const cors = require("cors");
+// const helmet = require("helmet");
+
+const visitorRoutes = require('./routes/visitors-routes.js')
+const adminRoutes = require('./routes/admin-routes.js')
+
 // Multer
 const multer = require('multer')
 const storage = multer.diskStorage({
@@ -17,17 +18,14 @@ const storage = multer.diskStorage({
       cb(null, file.originalname)
     }
   })
-  
+
 server.use(express.json());
-server.use("/api/kennels", kennelsRoutes);
-server.use("/api/dogs", dogRoutes);
-server.use("/api/breeds", breedRoutes);
-server.use("/api/notifications", notificationRoutes);
+server.use("/api/visitors", visitorRoutes)
+server.use("/api/admin", adminRoutes)
 
 server.get('/', (req, res) => {
     res.send("Woof Woof! We Out the Pound!")
 });
-
 server.post('/upload', (req, res, next) => {
     const upload = multer({ storage }).single('upload-image')
     upload(req, res, function(err) {

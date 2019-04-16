@@ -21,8 +21,6 @@ router.get('/:id', (req, res) => {
       res.status(500).json({ message: ` Failed to get Dog `, error: err });
     });
 });
-
-
 router.post('/', (req, res) => {
     Dogs.add(req.body)
     .then(data => {
