@@ -10,7 +10,8 @@ const secret = process.env.JWT_SECRET || 'this is just a test';
 module.exports = {
   authenticate,
   register,
-  login
+  login,
+  generateToken
 };
 // implementation details
 function authenticate(req, res, next) {
@@ -22,7 +23,6 @@ function authenticate(req, res, next) {
       }
       else{
         req.decoded = decoded;
-        console.log(decoded)
         next();
       } 
     })
@@ -38,7 +38,6 @@ async function register(user) {
     password = hash;
     const addKennel = await Kennels.add({name})
     const saved = await Admins.add({username, password, 'kennel_id': addKennel.kennel.id})
-    console.log('saved',saved)
     try {
       return ({token: generateToken(saved.admin), id: saved.admin.id })
     } catch (error) {
@@ -56,25 +55,12 @@ async function register(user) {
     };
     return jwt.sign(payload, secret, options)
     }
-function login(req, res) {
+async function login(username) {
 // implement user login
-let { username, password } = req.body;
-Admins.findBy({ username })
-    .first()
-    .then(user => {
-    
-    if (user && bcrypt.compareSync(password, user.password)) {
-        const token = generateToken(user); // new
-        res.status(200).json({
-        message: `Welcome ${user.username}!, have a token...`,
-        token,
-        id: user.id,
-        });
-    } else {
-        res.status(401).json({ message: 'Invalid Credentials' });
-    }
-    })
-    .catch(error => {
-    res.status(500).json(error);
-    });
+try {
+    return await Admins.findBy({username}) 
+} catch (error) {
+    return {error, 'message': 'this broke'}
+}
+
 }
