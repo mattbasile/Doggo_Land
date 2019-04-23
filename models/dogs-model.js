@@ -53,12 +53,20 @@ module.exports = {
     
   }
   async function add(dog){
-    const [id] = await db('dogs').insert(dog);
-    return findById(id);
+      try {
+          const id = dog.kennel_id
+          const kennel = await db("kennels").where({id}).first();
+          const [id] = await db('dogs').insert(dog);
+          return findById(id);
+      } 
+    catch (error) {
+        console.log(error)
+          throw new Error('That Kennel does not exist')
+      }
   }
   async function update(id, changes){
-      console.log(id, changes)
-  return await db('kennels')
+  console.log(id, changes)
+  return await db('dogs')
     .where({id})
     .update({changes})
     .then(count => (count > 0 ? findById(id): null))

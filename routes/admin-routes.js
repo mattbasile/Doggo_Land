@@ -54,4 +54,35 @@ router.delete('/:id', (req, res) => {
         res.status(500).json(error) 
     })
 });
+// Add a new Dog
+router.post('/dogs', (req, res) => {
+  const dog =  req.body
+  Admins.addDog(dog)
+  .then(data=>
+    res.status(201).json(data))
+.catch(err=>{
+    res.status(500).json(err)
+})
+});
+// Edit a Dog
+router.put('/dogs/:id', (req, res) => {
+    const changes = req.body
+    Admins.updateDog(req.params.id, changes)
+    .then(data=>
+        res.status(200).json(data))
+    .catch(err=>{
+        res.status(500).json(err)
+    })
+});
+// Get Nofitications
+router.get('/notifications/:id', (req, res) => {
+    const id = req.params.id
+    Admins.getNotifications(id)
+    .then(data=>
+        res.status(200).json(data))
+    .catch(err=>{
+        res.status(500).json(err)
+    })
+});
+
 module.exports = router;

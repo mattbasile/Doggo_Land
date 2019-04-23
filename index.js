@@ -6,6 +6,7 @@ const server = express();
 
 const visitorRoutes = require('./routes/visitors-routes.js')
 const adminRoutes = require('./routes/admin-routes.js')
+const kennelRoutes = require('./routes/kennels-routes.js')
 
 // Multer
 const multer = require('multer')
@@ -22,6 +23,7 @@ const storage = multer.diskStorage({
 server.use(express.json());
 server.use("/api/visitors", visitorRoutes)
 server.use("/api/admin", adminRoutes)
+server.use("/api/kennels", kennelRoutes)
 
 server.get('/', (req, res) => {
     res.send("Woof Woof! We Out the Pound!")
