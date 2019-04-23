@@ -4,7 +4,8 @@ const Dogs = require('./dogs-model');
 module.exports = {
     findById,
     findBy,
-    add
+    add,
+    remove
   };
  async function findBy(filter){
      console.log(filter)
@@ -21,3 +22,9 @@ module.exports = {
     const [id] = await db('admins').insert(admin);
     return findById(id);
   }
+
+async function remove(id){
+  const admin = await findBy({id})
+  await Kennels.remove(admin.kennel_id)
+  return await db("admins").where({id}).del()
+}

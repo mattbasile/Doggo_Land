@@ -35,4 +35,23 @@ router.post('/login', (req, res) => {
     res.status(500).json(error);
     });
 });
+router.get('/:id', (req, res) => {
+ Admins.findById(req.params.id)
+.then(data =>{
+    res.status(200).json(data)
+})
+.catch(err =>{
+    res.status(500).json(error) 
+})
+});
+// Delete an Admin 
+router.delete('/:id', (req, res) => {
+  Admins.remove(req.params.id)
+    .then(data =>{
+        res.status(200).json(data)
+    })
+    .catch(error =>{
+        res.status(500).json(error) 
+    })
+});
 module.exports = router;

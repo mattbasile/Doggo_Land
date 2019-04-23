@@ -30,5 +30,5 @@ module.exports = {
     .then(count => (count > 0 ? findById(id): null))
   }
   function remove(id){
-      return db("kennels").where(id).del();
+      return db("kennels").where({id}).del();
   }
