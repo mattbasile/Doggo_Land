@@ -19,8 +19,9 @@ module.exports = {
     return fullDogs;
   }
   async function findById(id) {
+    // console.log(id)
     const dog = await db("dogs").where({id}).first();
-    // console.log(dog)
+    // console.log("DM", dog)
     const breedID = await db("dog_breeds").innerJoin('dogs', 'dogs.id', 'dog_breeds.dog_id').where({"dog_id": dog.id})
     console.log(breedID)
     const breeds = await Promise.all(

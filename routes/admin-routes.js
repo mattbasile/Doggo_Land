@@ -74,6 +74,43 @@ router.put('/dogs/:id', (req, res) => {
         res.status(500).json(err)
     })
 });
+router.delete('/dogs/:id', (req, res) => {
+    Admins.removeDog(req.params.id)
+    .then(data =>{
+        res.status(200).json(data)
+    })
+    .catch(error =>{
+        res.status(500).json(error) 
+    })
+});
+// Add a new Breed 
+router.post('/breeds/:id', (req, res) => {
+    const dog_ID = req.params.id
+    const breed = req.body
+    Admins.addBreed(breed, dog_ID)
+    .then(data=>{
+        res.status(201).json(data)
+    })
+    .catch(err=>{
+        res.status(500).json(err)
+    })
+});
+// Assign a Breed to a dog 
+// router.post('/dogs/breed', (req, res) => {
+    
+// });
+
+
+// Edit a Kennel
+router.put('/kennels/:id', (req, res) => {
+   const changes = req.body
+   Admins.updateKennel(req.params.id, changes)
+   .then(data=>
+       res.status(200).json(data))
+   .catch(err=>{
+       res.status(500).json(err)
+   })
+});
 // Get Nofitications
 router.get('/notifications/:id', (req, res) => {
     const id = req.params.id
