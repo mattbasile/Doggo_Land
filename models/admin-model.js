@@ -64,6 +64,5 @@ async function addBreed(breed, dog_ID){
   return await Dogs.findById(dog_ID)
 }
 async function assignBreed(dogID, breedID){
-  const [id] = await db("dog_breeds").insert({"dog_id": dogID, "breed_id": breedID})
-  return id
+  return await db("dog_breeds").insert({"dog_id": dogID, "breed_id": breedID})
 }

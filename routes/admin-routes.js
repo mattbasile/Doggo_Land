@@ -83,6 +83,18 @@ router.delete('/dogs/:id', (req, res) => {
         res.status(500).json(error) 
     })
 });
+//Assign a Breed
+router.post('/breeds/assign', (req, res)=>{
+    const {dog_id, breed_id} = req.body
+    console.log(dog_id, breed_id)
+    Admins.assignBreed(dog_id, breed_id)
+    .then(data=>{
+        res.status(201).json(data)
+    })
+    .catch(err=>{
+        res.status(500).json(err)
+    })
+})
 // Add a new Breed 
 router.post('/breeds/:id', (req, res) => {
     const dog_ID = req.params.id
@@ -95,11 +107,6 @@ router.post('/breeds/:id', (req, res) => {
         res.status(500).json(err)
     })
 });
-// Assign a Breed to a dog 
-// router.post('/dogs/breed', (req, res) => {
-    
-// });
-
 
 // Edit a Kennel
 router.put('/kennels/:id', (req, res) => {
