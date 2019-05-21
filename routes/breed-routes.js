@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const Breeds = require("../models/breeds-model.js");
+const Breeds = require("../modules/breeds-module.js");
 
 router.get('/', (req, res) => {
     Breeds.find()

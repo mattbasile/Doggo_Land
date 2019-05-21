@@ -5,9 +5,11 @@ module.exports = {
     findById,
     findByKennel,
     add,
-    update,
-    remove
   };
+  async function add(dog){
+    const [id] = await db('dogs').insert(dog);
+    return findById(id);
+  }
   async function find() {
     const dogs = await db("dogs")
     var fullDogs =[]
@@ -23,7 +25,7 @@ module.exports = {
     const dog = await db("dogs").where({id}).first();
     // console.log("DM", dog)
     const breedID = await db("dog_breeds").innerJoin('dogs', 'dogs.id', 'dog_breeds.dog_id').where({"dog_id": dog.id})
-    console.log(breedID)
+    console.log('BREEDDID', breedID)
     const breeds = await Promise.all(
       breedID.map(async(breed)=>{
         try {
@@ -34,7 +36,7 @@ module.exports = {
         }
       })
     )
-    return {dog:{...dog, breeds}}
+    return {...dog, breeds}
   }
   function findBreed(id){
       return db("breeds").where({id})
@@ -49,29 +51,6 @@ module.exports = {
       full.push(dog)
     }
     console.log(full, "DOGS")
-
     return full
-    
   }
-  async function add(dog){
-      try {
-          const id = dog.kennel_id
-          const kennel = await db("kennels").where({id}).first();
-          const [id] = await db('dogs').insert(dog);
-          return findById(id);
-      } 
-    catch (error) {
-        console.log(error)
-          throw new Error('That Kennel does not exist')
-      }
-  }
-  async function update(id, changes){
-  console.log(id, changes)
-  return await db('dogs')
-    .where({id})
-    .update({changes})
-    .then(count => (count > 0 ? findById(id): null))
-  }
-  function remove(id){
-      return db("kennels").where(id).del();
-  }
+

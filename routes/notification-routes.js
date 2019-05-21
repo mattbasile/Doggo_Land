@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const Notifications = require("../models/notifications-model.js");
+const Notifications = require("../modules/notifications-module.js");
 
 
 router.post('/', (req, res) => {

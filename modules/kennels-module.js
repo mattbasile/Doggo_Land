@@ -1,10 +1,9 @@
 const db = require("../data/dbConfig.js");
-const Dogs = require('./dogs-model');
+const Dogs = require('./dogs-module.js');
 module.exports = {
     find,
     findById,
     add,
-    update,
     remove
 };
   async function find() {
@@ -16,18 +15,12 @@ module.exports = {
     const kennel = await db("kennels").where({id}).first();
     const doggos = await db("dogs").where({"kennel_id": id})
     const fullDogs = await Promise.all(doggos.map(dog => Dogs.findById(dog.id)))
-    return {kennel, dogs:fullDogs}
+    return {...kennel, dogs:fullDogs}
   }
   async function add(kennel){
     const [id] = await db('kennels').insert(kennel);
+    console.log('ktown', id)
     return findById(id);
-  }
-  async function update(id, changes){
-      console.log(id, changes)
-  return await db('kennels')
-    .where({id})
-    .update({changes})
-    .then(count => (count > 0 ? findById(id): null))
   }
   function remove(id){
       return db("kennels").where({id}).del();

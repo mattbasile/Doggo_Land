@@ -1,7 +1,7 @@
 
 require('dotenv').config();
-const Admins = require('./admin-model.js');
-const Kennels = require('./kennels-model.js');
+const Admins = require('./admin-module.js');
+const Kennels = require('./kennels-module.js');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const jwtKey = process.env.JWT_SECRET || 'this is just a test';
@@ -33,34 +33,35 @@ function authenticate(req, res, next) {
 async function register(user) {
     let { username, password } = user
     const name = user.kennel_name
+    
     // implement user registration
     const hash = bcrypt.hashSync(password, 12); // 2 ^ n
     password = hash;
+    console.log(password)
     const addKennel = await Kennels.add({name})
-    const saved = await Admins.add({username, password, 'kennel_id': addKennel.kennel.id})
+    console.log(addKennel)
+    const saved = await Admins.add({username, password, 'kennel_id': addKennel.id})
+    console.log('saved', saved)
     try {
-      return ({token: generateToken(saved.admin), id: saved.admin.id })
-    } catch (error) {
+      return ({token: generateToken(saved), id: saved.id })
+    } 
+    catch (error) {
       return error 
     }
   }
   //Generate Token
-  function generateToken(user){
-    const payload = {
-        id: user.id,
-        username: user.username,
-    };
-    const options ={
-        expiresIn: '24h',
-    };
-    return jwt.sign(payload, secret, options)
-    }
+function generateToken(user){
+  const payload = {
+      id: user.id,
+      username: user.username,
+  };
+  const options ={
+      expiresIn: '24h',
+  };
+  return jwt.sign(payload, secret, options)
+  }
+
 async function login(username) {
 // implement user login
-try {
-    return await Admins.findBy({username}) 
-} catch (error) {
-    return {error, 'message': 'this broke'}
-}
-
+  return await Admins.findBy({username}) 
 }

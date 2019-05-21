@@ -1,8 +1,8 @@
 const router = require("express").Router();
-const Kennels = require("../models/kennels-model.js");
-const Dogs = require("../models/dogs-model.js");
-const Breeds = require("../models/breeds-model.js");
-const Notifications = require("../models/notifications-model.js");
+const Kennels = require("../modules/kennels-module.js");
+const Dogs = require("../modules/dogs-module.js");
+const Breeds = require("../modules/breeds-module.js");
+const Notifications = require("../modules/notifications-module.js");
 
 
 router.get('/kennels', (req, res) => {
@@ -29,7 +29,7 @@ router.get('/dogs', (req, res) => {
       res.status(200).json(data);
     })
     .catch(err => {
-      res.status(500).json({ message: ` Failed to get Kennels `, error: err });
+      res.status(500).json({ message: ` Failed to get Dogs `, error: err });
     });
 });
 router.get('/dogs/:id', (req, res) => {
@@ -56,7 +56,7 @@ router.post('/notifications', (req, res) => {
    const date_sent = Date.now()
    const notification = {...req.body, date_sent}
    Notifications.add(notification)
-   .then(data=>res.status(201).json(data))
+   .then(data=>res.status(201).json(...data))
    .catch(err => res.status(500).json(err))
 });
 

@@ -1,20 +1,24 @@
 const router = require("express").Router();
-const Auth = require('../models/auth-model.js')
-const Admins = require('../models/admin-model.js');
+const Auth = require('../modules/auth-module.js')
+const Admins = require('../modules/admin-module.js');
+const Dogs = require('../modules/dogs-module.js');
 const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
-// const bcrypt = require('bcryptjs');
 
 router.post('/register', (req, res) => {
     const user = req.body
+    if(!user.username && !user.password ) {
+      res.status(401).json({ message: "Please provide a username and password for this user."})
+    }
+    else {
     Auth.register(user)
-    .then(data => {
-        console.log(data)
-        res.status(200).json(data)
-    }).catch(err => {
-        res.status(500).json({ message: ` Failed to register `, error: err });
-    });
-});
+     .then(data => {
+      res.status(200).json(data)
+     })
+     .catch(err => {
+      res.status(500).json({ message: ` Failed to register `, error: err });
+     });
+    }
+  });
 router.post('/login', (req, res) => {
     const {username, password} = req.body
     Auth.login(username)
@@ -41,8 +45,18 @@ router.get('/:id', (req, res) => {
     res.status(200).json(data)
 })
 .catch(err =>{
-    res.status(500).json(error) 
+    res.status(500).json(err) 
 })
+});
+// Update a Admin
+router.put('/:id', (req, res) => {
+    const changes = req.body
+    Admins.updateAdmin(req.params.id, changes)
+    .then(data=>
+        res.status(200).json(data))
+    .catch(err=>{
+        res.status(500).json(err)
+    })
 });
 // Delete an Admin 
 router.delete('/:id', (req, res) => {
@@ -57,7 +71,7 @@ router.delete('/:id', (req, res) => {
 // Add a new Dog
 router.post('/dogs', (req, res) => {
   const dog =  req.body
-  Admins.addDog(dog)
+  Dogs.add(dog)
   .then(data=>
     res.status(201).json(data))
 .catch(err=>{
@@ -74,8 +88,20 @@ router.put('/dogs/:id', (req, res) => {
         res.status(500).json(err)
     })
 });
+// Delete A Dog
 router.delete('/dogs/:id', (req, res) => {
     Admins.removeDog(req.params.id)
+    .then(data =>{
+        res.status(200).json(data)
+    })
+    .catch(error =>{
+        res.status(500).json(error) 
+    })
+});
+// Remove a Breed
+router.delete('/breeds/remove', (req, res) => {
+    const {dog_id, breed_id} = req.body
+    Admins.removeBreed(dog_id, breed_id)
     .then(data =>{
         res.status(200).json(data)
     })

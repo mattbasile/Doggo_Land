@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const Kennels = require("../models/kennels-model.js");
+const Kennels = require("../modules/kennels-module.js");
 
 
 router.get('/', (req, res) => {
