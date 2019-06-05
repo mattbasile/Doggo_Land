@@ -63,5 +63,7 @@ function generateToken(user){
 
 async function login(username) {
 // implement user login
-  return await Admins.findBy({username}) 
+  const user = await Admins.findBy({username});
+  const kennel = await Kennels.findById(user.kennel_id);
+  return {...user, ...kennel}
 }

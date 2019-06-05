@@ -68,7 +68,7 @@ async function updateKennel(id, changes){
 }
 
 function getNotifications(id){
-  return db('notifications').where({"admin_id":id})
+  return db('notifications').where({"kennel_id":id})
 }
 async function addBreed(breed, dog_ID){
   console.log(dog_ID)

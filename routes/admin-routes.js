@@ -30,6 +30,15 @@ router.post('/login', (req, res) => {
         message: `Welcome ${user.username}!, have a token...`,
         token,
         id: user.id,
+        kennel_id: user.kennel_id,
+        username: user.username,
+        name: user.name,
+        bio: user.bio,
+        location: user.location,
+        email: user.email,
+        phone: user.phone,
+        img_url: user.img_ulr,
+        dogs: user.dogs,
         });
     } else {
         res.status(401).json({ message: 'Invalid Credentials' });
@@ -144,7 +153,7 @@ router.put('/kennels/:id', (req, res) => {
        res.status(500).json(err)
    })
 });
-// Get Nofitications
+// Get Nofitications --- id == admin.kennel_id 
 router.get('/notifications/:id', (req, res) => {
     const id = req.params.id
     Admins.getNotifications(id)
