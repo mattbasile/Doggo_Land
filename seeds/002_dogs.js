@@ -14,6 +14,7 @@ exports.seed = function(knex, Promise) {
           "male": faker.random.boolean() ,
           "price": faker.random.number({'min': 0, 'max': 200}),
           "img_url": faker.image.animals(), 
+          "name": faker.name.firstName()
         },
         {
           "kennel_id": faker.random.number({'min': 1, 'max': 3}) ,
@@ -23,6 +24,7 @@ exports.seed = function(knex, Promise) {
           "male": faker.random.boolean() ,
           "price": faker.random.number({'min': 0, 'max': 200}),
           "img_url": faker.image.animals(), 
+          "name": faker.name.firstName()
         },
         {
           "kennel_id": faker.random.number({'min': 1, 'max': 3}) ,
@@ -32,6 +34,7 @@ exports.seed = function(knex, Promise) {
           "male": faker.random.boolean() ,
           "price": faker.random.number({'min': 0, 'max': 200}),
           "img_url": faker.image.animals(), 
+          "name": faker.name.firstName()
         },
         {
           "kennel_id": faker.random.number({'min': 1, 'max': 3}) ,
@@ -41,6 +44,7 @@ exports.seed = function(knex, Promise) {
           "male": faker.random.boolean() ,
           "price": faker.random.number({'min': 0, 'max': 200}),
           "img_url": faker.image.animals(), 
+          "name": faker.name.firstName()
         },
         {
           "kennel_id": faker.random.number({'min': 1, 'max': 3}) ,
@@ -50,6 +54,7 @@ exports.seed = function(knex, Promise) {
           "male": faker.random.boolean() ,
           "price": faker.random.number({'min': 0, 'max': 200}),
           "img_url": faker.image.animals(), 
+          "name": faker.name.firstName()
         }
       ]);
     });

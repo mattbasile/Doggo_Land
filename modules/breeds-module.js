@@ -4,8 +4,8 @@ module.exports = {
     find,
     findBreeds
   };
-  function find(){
-      return db("breeds")
+ async function find(){
+    return db("breeds")
   }
   async function findBreeds(id){
         const middle = await db("dog_breeds").where({"breed_id":id})

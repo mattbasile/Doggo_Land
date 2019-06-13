@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require("express");
 const server = express();
 const {authenticate} = require('./modules/auth-module.js');
-// const cors = require("cors");
+const cors = require("cors");
 // const helmet = require("helmet");
 
 const visitorRoutes = require('./routes/visitors-routes.js')
@@ -11,6 +11,7 @@ const kennelRoutes = require('./routes/kennels-routes.js')
 
 
 server.use(express.json());
+server.use(cors())
 server.use("/api/visitors", visitorRoutes)
 server.use("/api/admin", adminRoutes)
 server.use("/api/kennels", kennelRoutes)

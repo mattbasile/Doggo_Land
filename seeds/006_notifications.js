@@ -7,7 +7,7 @@ exports.seed = function(knex, Promise) {
       // Inserts seed entries
       return knex('notifications').insert([
         {
-          "admin_id": 1,
+          "kennel_id": 1,
           "dog_id": 1,
           "email": faker.internet.email(),
           "message": faker.lorem.sentences(),
@@ -15,7 +15,7 @@ exports.seed = function(knex, Promise) {
           "date_sent": faker.date.recent()  
         },
         {
-          "admin_id": 2,
+          "kennel_id": 2,
           "dog_id": 2,
           "email": faker.internet.email(),
           "message": faker.lorem.sentences(),
@@ -23,7 +23,7 @@ exports.seed = function(knex, Promise) {
           "date_sent": faker.date.recent()     
         },
         {
-          "admin_id": 3,
+          "kennel_id": 3,
           "dog_id": 2,
           "email": faker.internet.email(),
           "message": faker.lorem.sentences(),

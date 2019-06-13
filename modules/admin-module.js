@@ -68,13 +68,14 @@ async function updateKennel(id, changes){
 }
 
 function getNotifications(id){
-  return db('notifications').where({"admin_id":id})
+  return db('notifications').where({"kennel_id":id})
 }
-async function addBreed(breed, dog_ID){
-  console.log(dog_ID)
-  const [id] = await db("breeds").insert(breed)
-  await db("dog_breeds").insert({"dog_id": dog_ID, "breed_id": id})
-  return await Dogs.findById(dog_ID)
+
+async function addBreed(name){
+  const [id] = await db("breeds").insert(name);
+  return await db("breeds").where({id});
+  // await db("dog_breeds").insert({"dog_id": dog_ID, "breed_id": id})
+  // return await Dogs.findById(dog_ID)
 }
 async function assignBreed(dogID, breedID){
   const response = await db("dog_breeds").insert({"dog_id": dogID, "breed_id": breedID})

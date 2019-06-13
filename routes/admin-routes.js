@@ -2,8 +2,20 @@ const router = require("express").Router();
 const Auth = require('../modules/auth-module.js')
 const Admins = require('../modules/admin-module.js');
 const Dogs = require('../modules/dogs-module.js');
+const Breeds = require('../modules/breeds-module.js');
 const bcrypt = require('bcryptjs');
 
+// Get All Breeds
+router.get('/breeds', (req, res) => {
+    console.log("heherheerh")
+    Breeds.find()
+    .then(data =>{
+        res.status(200).json(data)
+    })
+    .catch(err =>{
+        res.status(500).json(err) 
+    })
+});
 router.post('/register', (req, res) => {
     const user = req.body
     if(!user.username && !user.password ) {
@@ -27,9 +39,17 @@ router.post('/login', (req, res) => {
     if (user && bcrypt.compareSync(password, user.password)) {
         const token = Auth.generateToken(user); // new
         res.status(200).json({
-        message: `Welcome ${user.username}!, have a token...`,
         token,
         id: user.id,
+        kennel_id: user.kennel_id,
+        username: user.username,
+        name: user.name,
+        bio: user.bio,
+        location: user.location,
+        email: user.email,
+        phone: user.phone,
+        img_url: user.img_ulr,
+        dogs: user.dogs,
         });
     } else {
         res.status(401).json({ message: 'Invalid Credentials' });
@@ -68,6 +88,7 @@ router.delete('/:id', (req, res) => {
         res.status(500).json(error) 
     })
 });
+
 // Add a new Dog
 router.post('/dogs', (req, res) => {
   const dog =  req.body
@@ -75,6 +96,7 @@ router.post('/dogs', (req, res) => {
   .then(data=>
     res.status(201).json(data))
 .catch(err=>{
+    console.log(err)
     res.status(500).json(err)
 })
 });
@@ -122,12 +144,11 @@ router.post('/breeds/assign', (req, res)=>{
     })
 })
 // Add a new Breed 
-router.post('/breeds/:id', (req, res) => {
-    const dog_ID = req.params.id
+router.post('/breeds/add', (req, res) => {
     const breed = req.body
-    Admins.addBreed(breed, dog_ID)
+    Admins.addBreed(breed)
     .then(data=>{
-        res.status(201).json(data)
+        res.status(201).json(...data)
     })
     .catch(err=>{
         res.status(500).json(err)
@@ -144,7 +165,7 @@ router.put('/kennels/:id', (req, res) => {
        res.status(500).json(err)
    })
 });
-// Get Nofitications
+// Get Nofitications --- id == admin.kennel_id 
 router.get('/notifications/:id', (req, res) => {
     const id = req.params.id
     Admins.getNotifications(id)
